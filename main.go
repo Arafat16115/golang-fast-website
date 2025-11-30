@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
-	"text/template"
 )
 
 func main() {
@@ -13,7 +13,6 @@ func main() {
 	http.HandleFunc("/docs", docs)
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("./assets"))))
 	http.ListenAndServe(":8888", nil)
-
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +21,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+
 	ptmp.Execute(w, nil)
 	//fmt.Fprintf(w, `welcome`)
 }
@@ -33,7 +33,7 @@ func features(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 
-	ptmp, err = template.ParseFiles("wpage/features.gohtml")
+	ptmp, err = ptmp.ParseFiles("wpage/features.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -47,6 +47,7 @@ func docs(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+
 	ptmp, err = ptmp.ParseFiles("wpage/docs.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
